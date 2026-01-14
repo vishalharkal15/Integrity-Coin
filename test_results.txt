@@ -1,0 +1,39 @@
+# github.com/yourusername/bt/internal/grpc
+internal/grpc/server.go:84:22: s.bc.GetBlockByHeight undefined (type *blockchain.Blockchain has no field or method GetBlockByHeight)
+internal/grpc/server.go:99:21: s.bc.GetBlockByHeight undefined (type *blockchain.Blockchain has no field or method GetBlockByHeight)
+internal/grpc/server.go:110:23: s.bc.GetBlockByHeight undefined (type *blockchain.Blockchain has no field or method GetBlockByHeight)
+internal/grpc/server.go:120:32: s.bc.GetDifficulty undefined (type *blockchain.Blockchain has no field or method GetDifficulty)
+internal/grpc/server.go:130:21: s.bc.GetBlockByHeight undefined (type *blockchain.Blockchain has no field or method GetBlockByHeight)
+internal/grpc/server.go:152:15: invalid operation: tx.ID == req.TxId (mismatched types []byte and string)
+internal/grpc/server.go:162:22: s.bc.GetBlockByHeight undefined (type *blockchain.Blockchain has no field or method GetBlockByHeight)
+internal/grpc/server.go:199:13: cannot use transaction.ID (variable of type []byte) as string value in struct literal
+internal/grpc/server.go:223:16: s.bc.GetUTXOSet undefined (type *blockchain.Blockchain has no field or method GetUTXOSet)
+internal/grpc/server.go:248:18: s.bc.GetBalance undefined (type *blockchain.Blockchain has no field or method GetBalance)
+internal/grpc/server.go:248:18: too many errors
+# github.com/libp2p/go-libp2p/core/peer
+../../go/pkg/mod/github.com/libp2p/go-libp2p@v0.36.4/core/peer/addrinfo.go:94:25: cannot use p2ppart (variable of type *multiaddr.Component) as multiaddr.Multiaddr value in array or slice literal
+# github.com/quic-go/quic-go/http3
+../../go/pkg/mod/github.com/quic-go/quic-go@v0.46.0/http3/client.go:83:31: too many arguments in call to qpack.NewDecoder
+	have (func(hf qpack.HeaderField))
+	want ()
+../../go/pkg/mod/github.com/quic-go/quic-go@v0.46.0/http3/conn.go:75:38: too many arguments in call to qpack.NewDecoder
+	have (func(hf qpack.HeaderField))
+	want ()
+../../go/pkg/mod/github.com/quic-go/quic-go@v0.46.0/http3/http_stream.go:210:24: s.decoder.DecodeFull undefined (type *qpack.Decoder has no field or method DecodeFull)
+../../go/pkg/mod/github.com/quic-go/quic-go@v0.46.0/http3/server.go:551:22: decoder.DecodeFull undefined (type *qpack.Decoder has no field or method DecodeFull)
+?   	github.com/yourusername/bt/api/proto	[no test files]
+?   	github.com/yourusername/bt/cmd/node	[no test files]
+FAIL	github.com/yourusername/bt/cmd/node-grpc [build failed]
+FAIL	github.com/yourusername/bt/cmd/node-p2p [build failed]
+?   	github.com/yourusername/bt/cmd/wallet	[no test files]
+ok  	github.com/yourusername/bt/internal/blockchain	3.123s
+ok  	github.com/yourusername/bt/internal/crypto	0.024s
+FAIL	github.com/yourusername/bt/internal/grpc [build failed]
+ok  	github.com/yourusername/bt/internal/merkle	0.004s
+FAIL	github.com/yourusername/bt/internal/p2p [build failed]
+ok  	github.com/yourusername/bt/internal/pow	0.081s
+?   	github.com/yourusername/bt/internal/storage	[no test files]
+ok  	github.com/yourusername/bt/internal/tx	0.015s
+ok  	github.com/yourusername/bt/internal/utxo	0.015s
+?   	github.com/yourusername/bt/pkg/types	[no test files]
+FAIL

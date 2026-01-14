@@ -1,0 +1,258 @@
+syntax = "proto3";
+
+package blockchain;
+
+option go_package = "github.com/yourusername/bt/api/proto;proto";
+
+import "google/protobuf/timestamp.proto";
+
+// Blockchain service provides query and mutation operations for the blockchain
+service BlockchainService {
+  // Query operations
+  rpc GetBlockByHash(GetBlockByHashRequest) returns (Block);
+  rpc GetBlockByHeight(GetBlockByHeightRequest) returns (Block);
+  rpc GetBlockchainInfo(GetBlockchainInfoRequest) returns (BlockchainInfo);
+  rpc GetBestBlockHash(GetBestBlockHashRequest) returns (GetBestBlockHashResponse);
+  rpc GetBlockHeight(GetBlockHeightRequest) returns (GetBlockHeightResponse);
+  
+  // Transaction operations
+  rpc GetTransaction(GetTransactionRequest) returns (Transaction);
+  rpc SubmitTransaction(SubmitTransactionRequest) returns (SubmitTransactionResponse);
+  rpc GetMempool(GetMempoolRequest) returns (GetMempoolResponse);
+  
+  // UTXO operations
+  rpc GetUTXO(GetUTXORequest) returns (GetUTXOResponse);
+  rpc GetBalance(GetBalanceRequest) returns (GetBalanceResponse);
+  
+  // P2P operations
+  rpc GetPeerInfo(GetPeerInfoRequest) returns (GetPeerInfoResponse);
+  rpc ConnectPeer(ConnectPeerRequest) returns (ConnectPeerResponse);
+  
+  // Mining operations
+  rpc StartMining(StartMiningRequest) returns (StartMiningResponse);
+  rpc StopMining(StopMiningRequest) returns (StopMiningResponse);
+  rpc GetMiningInfo(GetMiningInfoRequest) returns (MiningInfo);
+  
+  // Streaming operations
+  rpc SubscribeBlocks(SubscribeBlocksRequest) returns (stream Block);
+  rpc SubscribeTransactions(SubscribeTransactionsRequest) returns (stream Transaction);
+}
+
+// Wallet service provides wallet management operations
+service WalletService {
+  rpc CreateWallet(CreateWalletRequest) returns (Wallet);
+  rpc GetWallet(GetWalletRequest) returns (Wallet);
+  rpc ListWallets(ListWalletsRequest) returns (ListWalletsResponse);
+  rpc GetWalletBalance(GetWalletBalanceRequest) returns (GetWalletBalanceResponse);
+  rpc SendTransaction(SendTransactionRequest) returns (SendTransactionResponse);
+}
+
+// Block message
+message Block {
+  string hash = 1;
+  int64 height = 2;
+  string previous_hash = 3;
+  google.protobuf.Timestamp timestamp = 4;
+  int64 nonce = 5;
+  int32 difficulty = 6;
+  repeated Transaction transactions = 7;
+  string merkle_root = 8;
+}
+
+// Transaction message
+message Transaction {
+  string id = 1;
+  repeated TxInput inputs = 2;
+  repeated TxOutput outputs = 3;
+  google.protobuf.Timestamp timestamp = 4;
+}
+
+// Transaction Input
+message TxInput {
+  string tx_id = 1;
+  int32 vout = 2;
+  string signature = 3;
+  string public_key = 4;
+}
+
+// Transaction Output
+message TxOutput {
+  int64 value = 1;
+  string public_key_hash = 2;
+}
+
+// UTXO message
+message UTXO {
+  string tx_id = 1;
+  int32 vout = 2;
+  TxOutput output = 3;
+}
+
+// Wallet message
+message Wallet {
+  string address = 1;
+  string public_key = 2;
+  // Private key should never be transmitted, only stored locally
+}
+
+// Peer information
+message PeerInfo {
+  string peer_id = 1;
+  repeated string addresses = 2;
+  string connection_status = 3;
+}
+
+// Mining information
+message MiningInfo {
+  bool is_mining = 1;
+  int64 blocks_mined = 2;
+  int64 current_difficulty = 3;
+  int64 hash_rate = 4;
+}
+
+// Blockchain information
+message BlockchainInfo {
+  int64 height = 1;
+  string best_block_hash = 2;
+  int64 difficulty = 3;
+  int64 total_transactions = 4;
+  int64 peer_count = 5;
+  bool is_syncing = 6;
+}
+
+// Request/Response messages
+
+message GetBlockByHashRequest {
+  string hash = 1;
+}
+
+message GetBlockByHeightRequest {
+  int64 height = 1;
+}
+
+message GetBlockchainInfoRequest {}
+
+message GetBestBlockHashRequest {}
+
+message GetBestBlockHashResponse {
+  string hash = 1;
+}
+
+message GetBlockHeightRequest {}
+
+message GetBlockHeightResponse {
+  int64 height = 1;
+}
+
+message GetTransactionRequest {
+  string tx_id = 1;
+}
+
+message SubmitTransactionRequest {
+  Transaction transaction = 1;
+}
+
+message SubmitTransactionResponse {
+  string tx_id = 1;
+  bool accepted = 2;
+  string message = 3;
+}
+
+message GetMempoolRequest {}
+
+message GetMempoolResponse {
+  repeated Transaction transactions = 1;
+  int32 count = 2;
+}
+
+message GetUTXORequest {
+  string address = 1;
+}
+
+message GetUTXOResponse {
+  repeated UTXO utxos = 1;
+  int64 total_value = 2;
+}
+
+message GetBalanceRequest {
+  string address = 1;
+}
+
+message GetBalanceResponse {
+  int64 balance = 1;
+  int32 utxo_count = 2;
+}
+
+message GetPeerInfoRequest {}
+
+message GetPeerInfoResponse {
+  repeated PeerInfo peers = 1;
+  int32 peer_count = 2;
+}
+
+message ConnectPeerRequest {
+  string multiaddr = 1;
+}
+
+message ConnectPeerResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message StartMiningRequest {
+  string miner_address = 1;
+}
+
+message StartMiningResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message StopMiningRequest {}
+
+message StopMiningResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message GetMiningInfoRequest {}
+
+message SubscribeBlocksRequest {}
+
+message SubscribeTransactionsRequest {}
+
+// Wallet service messages
+
+message CreateWalletRequest {
+  string name = 1;
+}
+
+message GetWalletRequest {
+  string address = 1;
+}
+
+message ListWalletsRequest {}
+
+message ListWalletsResponse {
+  repeated Wallet wallets = 1;
+}
+
+message GetWalletBalanceRequest {
+  string address = 1;
+}
+
+message GetWalletBalanceResponse {
+  int64 balance = 1;
+}
+
+message SendTransactionRequest {
+  string from_address = 1;
+  string to_address = 2;
+  int64 amount = 3;
+}
+
+message SendTransactionResponse {
+  string tx_id = 1;
+  bool success = 2;
+  string message = 3;
+}
