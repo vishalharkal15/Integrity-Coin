@@ -2,7 +2,7 @@
 
 # Build variables
 BINARY_DIR=bin
-MAIN_PACKAGES=cmd/node cmd/wallet cmd/node-p2p cmd/node-grpc
+MAIN_PACKAGES=cmd/node cmd/wallet cmd/node-p2p cmd/node-grpc cmd/web-server
 
 # Go commands
 GOCMD=go
@@ -23,6 +23,7 @@ build:
 	$(GOBUILD) -o $(BINARY_DIR)/wallet cmd/wallet/main.go
 	$(GOBUILD) -o $(BINARY_DIR)/node-p2p cmd/node-p2p/main.go
 	$(GOBUILD) -o $(BINARY_DIR)/node-grpc cmd/node-grpc/main.go
+	$(GOBUILD) -o $(BINARY_DIR)/web-server cmd/web-server/main.go
 	@echo "✅ Build complete! Binaries in $(BINARY_DIR)/"
 
 # Build individual binaries
@@ -34,8 +35,11 @@ wallet:
 
 node-p2p:
 	$(GOBUILD) -o $(BINARY_DIR)/node-p2p cmd/node-p2p/main.go
-
 node-grpc:
+	$(GOBUILD) -o $(BINARY_DIR)/node-grpc cmd/node-grpc/main.go
+
+web-server:
+	$(GOBUILD) -o $(BINARY_DIR)/web-server cmd/web-server/main.go
 	$(GOBUILD) -o $(BINARY_DIR)/node-grpc cmd/node-grpc/main.go
 
 # Run tests
@@ -93,9 +97,13 @@ run:
 	$(BINARY_DIR)/node
 
 # Run gRPC node
-run-grpc:
-	$(BINARY_DIR)/node-grpc -grpc :50051 -fresh
+# Run P2P node
+run-p2p:
+	$(BINARY_DIR)/node-p2p -listen "/ip4/0.0.0.0/tcp/9001" -fresh -mine
 
+# Run web server (requires gRPC node running)
+run-web:
+	$(BINARY_DIR)/web-server
 # Run P2P node
 run-p2p:
 	$(BINARY_DIR)/node-p2p -listen "/ip4/0.0.0.0/tcp/9001" -fresh -mine
@@ -110,6 +118,7 @@ help:
 	@echo "  make wallet      - Build wallet binary"
 	@echo "  make node-p2p    - Build P2P node binary"
 	@echo "  make node-grpc   - Build gRPC node binary"
+	@echo "  make web-server  - Build web server binary"
 	@echo ""
 	@echo "Testing:"
 	@echo "  make test        - Run tests (short mode)"
@@ -120,6 +129,7 @@ help:
 	@echo "  make run         - Run basic node"
 	@echo "  make run-grpc    - Run gRPC node"
 	@echo "  make run-p2p     - Run P2P node"
+	@echo "  make run-web     - Run web server (requires gRPC node)"
 	@echo ""
 	@echo "Development:"
 	@echo "  make deps        - Install dependencies"
