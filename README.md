@@ -420,8 +420,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Contact
 
-- **GitHub**: [@yourusername](https://github.com/yourusername)
-- **Email**: your.email@example.com
+- **GitHub**: [@vishalharkal15](https://github.com/vishalharkal15)
+- **Email**: vishalharkal@dietms.org
 
 ## ⭐ Star History
 
